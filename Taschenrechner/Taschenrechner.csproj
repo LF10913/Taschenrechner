@@ -79,5 +79,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\KürzenLibrary\KürzenLibrary.csproj">
+      <Project>{19caa7e9-deef-4ab3-9994-6867935e619e}</Project>
+      <Name>KürzenLibrary</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

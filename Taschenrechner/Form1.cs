@@ -4,11 +4,15 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
+
 
 
 namespace Taschenrechner
@@ -17,10 +21,10 @@ namespace Taschenrechner
 
     // als nächstes Kürzen, das ergebnis vorallem mit GGT
     // 
-    public partial class Form1 : Form
+    public partial class Calculator : Form
     {
         
-        public Form1()
+        public Calculator()
         {
             InitializeComponent();
         }
@@ -41,15 +45,18 @@ namespace Taschenrechner
         double ResultFull;
         double ResultOben;
         double ResultUnten;
+        double ResultRest = 0;
 
         double ZählerLinks;
         double ZählerRechts;
-        double ZählerGekürztLinks;
-        double ZählerGekürztRechts;
-        double NennerGekürztLinks;
-        double NennerGekürztRechts;
 
+        double FirstRest;
+        double SecondRest;
+        double FirstRestFull;
+        double SecondRestFull;
 
+        double forCheck = 0;
+        double aa = 0;
 
         bool TextChangedol = false;
         bool TextChangedul = false;
@@ -61,10 +68,11 @@ namespace Taschenrechner
         bool multiplyWasClicked = false;
         bool divideWasClicked = false;
 
+        
 
-         
 
-         
+
+
 
 
 
@@ -87,6 +95,30 @@ namespace Taschenrechner
 
         }
 
+
+        //public static double GCD(double p, double q)
+        //{
+        //    if (q == 0)
+        //    {
+        //        return p;
+        //    }
+
+        //    double r = p % q;
+
+        //    return GCD(q, r);
+        //}
+
+        //static int GreatestCommonDivisor(double[] numbers)
+        //{
+        //    return numbers.Aggregate(GCD);
+        //}
+
+        static double GreatestCommonDivisor(double x, double y)
+        {
+            return y == 0 ? x : GreatestCommonDivisor(y, x % y);
+        }
+
+
         public void Rechner()
         {
             
@@ -95,22 +127,34 @@ namespace Taschenrechner
             FirstBruchUnten = double.Parse(FirstUnten.Text);
             SecondBruchOben = double.Parse(SecondOben.Text);
             SecondBruchUnten = double.Parse(SecondUnten.Text);
+            FirstRest = double.Parse(LinksRest.Text);
+            SecondRest = double.Parse(RechtsRest.Text);
+            
+            FirstRestFull = FirstRest * FirstBruchUnten;
+            SecondRestFull = SecondRest * SecondBruchUnten;
+
+            
 
             // manual check if results were accurate
-                FirstBruchFull = FirstBruchOben / FirstBruchUnten;
-                SecondBruchFull = SecondBruchOben / SecondBruchUnten;
+                FirstBruchFull = (FirstBruchOben + FirstRestFull) / FirstBruchUnten;
+                SecondBruchFull = (SecondBruchOben + SecondRestFull) / SecondBruchUnten;
+
 
             // multiplizieren
             if(multiplyWasClicked == true)
             {
                 // manual check to be deleted
                 ResultFull = FirstBruchFull * SecondBruchFull;
-                ResultFullB.Text = ResultFull.ToString();
+                var ResultRounded = Math.Round(ResultFull, 2);
+                ResultFullB.Text = ResultRounded.ToString();
 
-                ResultOben = FirstBruchOben * SecondBruchOben;
-                ResultObenB.Text = ResultOben.ToString();
+                // mischt die ganze Zahl mit dem Zähler/Nenner und multipliziert sie,
+                // um den Zähler/Nenner des ergebnisses zu erhalten
+                ResultOben = (FirstBruchOben + FirstRestFull) * (SecondBruchOben + SecondRestFull);
                 ResultUnten = FirstBruchUnten * SecondBruchUnten;
-                ResultUntenB.Text = ResultUnten.ToString();
+
+                Kürzen();
+
             }
 
             // dividieren
@@ -118,96 +162,242 @@ namespace Taschenrechner
             {
                 // manual check to be deleted
                 ResultFull = FirstBruchFull / SecondBruchFull;
-                ResultFullB.Text = ResultFull.ToString();
+                var ResultRounded = Math.Round(ResultFull, 2);
+                ResultFullB.Text = ResultRounded.ToString();
 
-                ResultOben = FirstBruchOben * SecondBruchUnten;
-                ResultObenB.Text = ResultOben.ToString();
-                ResultUnten = FirstBruchUnten * SecondBruchOben;
-                ResultUntenB.Text = ResultUnten.ToString();
+                // mischt die ganze Zahl mit dem Zähler/Nenner und multipliziert sie,
+                // um den Zähler/Nenner des ergebnisses zu erhalten
+                ResultOben = (FirstBruchOben + FirstRestFull) * SecondBruchUnten;
+                ResultUnten = FirstBruchUnten * (SecondBruchOben + SecondRestFull);
+
+                Kürzen();
             }
 
             // addieren
-            if(addWasClicked == true)
+            if (addWasClicked == true)
             {
                 // manual check to be deleted
                 ResultFull = FirstBruchFull + SecondBruchFull;
-                ResultFullB.Text = ResultFull.ToString();
+                var ResultRounded = Math.Round(ResultFull, 2);
+                ResultFullB.Text = ResultRounded.ToString();
 
-                // var kGV = Getsor(FirstBruchUnten, SecondBruchUnten)
-
-                // var multiplikatorZaehlerLinks = kGV / zaehlerLinks;
-                // var mulitlikatorZaehlerrechts = kGV / ZaehlerRechts;
-                // var zaehlerLinks = Zahlerlinks*multiplikatorZaehlerLinks;
-                // var zahlerrechts = zahlerrechts * mulitlikatorZaehlerrechts;
-                //  var ergebnissZehaler = zaehlerLinks + zahlerrechts;
-                // nennerErgeebniss = kGV;
-
-                /*
-                 *  X_1   - Zähler
-                 *  ____
-                 *  Y_1  - Nenner
-                 */
-
-
-
-                var kGV = Getsor(FirstBruchUnten, SecondBruchUnten);
-
-                ZählerGekürztLinks = FirstBruchOben;
-                ZählerGekürztRechts = SecondBruchOben;
-                NennerGekürztLinks = FirstBruchUnten;
-                NennerGekürztRechts = SecondBruchUnten;
-
-                
-
+                // macht rechnungen, bis nenner und zähler vom result richtig sind
+                var kGV = GetLCM(FirstBruchUnten, SecondBruchUnten);
                 var multiplikatorObenLinks = kGV / FirstBruchUnten;
                 var multiplikatorObenRechts = kGV / SecondBruchUnten;
-                ZählerLinks = FirstBruchOben * multiplikatorObenLinks;
-                ZählerRechts = SecondBruchOben * multiplikatorObenRechts;
+                ZählerLinks = (FirstBruchOben + FirstRestFull) * multiplikatorObenLinks;
+                ZählerRechts = (SecondBruchOben + SecondRestFull) * multiplikatorObenRechts;
                 ResultOben = ZählerLinks + ZählerRechts;
-                
                 ResultUnten = kGV;
-                
 
+                Kürzen();
 
-                if(ResultOben == 0)
-                {
-                    ResultUnten = 0;
-                }
-                ResultObenB.Text = ResultOben.ToString();
-                ResultUntenB.Text = ResultUnten.ToString();
             }
 
+
+
+            //subtrahieren
             if (subtractWasClicked == true)
             {
                 // manual check to be deleted
                 ResultFull = FirstBruchFull - SecondBruchFull;
-                ResultFullB.Text = ResultFull.ToString();
+                var ResultRounded = Math.Round(ResultFull, 2);
+                ResultFullB.Text = ResultRounded.ToString();
 
-                
-
-                var kGV = Getsor(FirstBruchUnten, SecondBruchUnten);
+                // macht rechnungen, bis nenner und zähler vom result richtig sind
+                var kGV = GetLCM(FirstBruchUnten, SecondBruchUnten);
                 var multiplikatorObenLinks = kGV / FirstBruchUnten;
                 var multiplikatorObenRechts = kGV / SecondBruchUnten;
-                ZählerLinks = FirstBruchOben * multiplikatorObenLinks;
-                ZählerRechts = SecondBruchOben * multiplikatorObenRechts;
-                
+                ZählerLinks = (FirstBruchOben + FirstRestFull) * multiplikatorObenLinks;
+                ZählerRechts = (SecondBruchOben + SecondRestFull) * multiplikatorObenRechts;
                 ResultOben = ZählerLinks - ZählerRechts;
-                
                 ResultUnten = kGV;
-
-                if (ResultOben == 0)
-                {
-                    ResultUnten = 0;
-                }
-                ResultObenB.Text = ResultOben.ToString();
-                ResultUntenB.Text = ResultUnten.ToString();
-
+                
+                Kürzen();
 
             }
 
+            
+               
+
         }
 
-        private double Getsor(double nennerL, double nennerR) //Beispiel 2 und 3
+        public void Kürzen()
+        {
+            bool bothNegative = ResultOben < 0 & ResultUnten < 0;
+            // es merkt sich obs negativ ist, damit es dann am ende wieder negativ gemacht werden kann
+            bool isNegative = ResultOben < 0 || ResultUnten < 0;
+
+
+            // da das nur mit der größeren Zahl als negatives klappt, mache ich die größere Zahl die negative, da es egal ist im bruch welche Zahl negativ ist
+
+            Positive();
+
+            // wenn das Ergenbis nicht nur eine ganze Zahl ist und der Zähler größer als der Nenner ist
+            if (ResultUnten != 1)
+            {
+
+                double num1, num2;
+
+                forCheck = 0;
+                num1 = ResultOben;
+                num2 = ResultUnten;
+
+
+                // nummer 1 ist immer größer als nummer 2
+                // und ist immer der größere von den beiden Zahlen
+
+                // geht durch einen for loop, bis sich heraus stellt,
+                // wie oft die größere Zahl durch die kleinere geteilt werden kann
+                // und gibt dann diesen wert wieder
+
+                for (double i = num1; i > num2; i -= num2) // von 1 bis kleinste Nenner
+                {
+
+                    forCheck++;
+                    //mult = i / num1;
+                }
+                ResultRest = forCheck;
+
+                if (ResultOben > 0)
+                {
+
+                    // zieht die ermittelte Ganze Zahl vom Bruch ab
+                    ResultOben = ResultOben - forCheck * ResultUnten;
+
+                    // holt den greatest common divisor von Zähler und Nenner um die beiden zu kürzen
+                    var gcd = GreatestCommonDivisor(ResultOben, ResultUnten);
+
+                    ResultOben = ResultOben / gcd;
+                    ResultUnten = ResultUnten / gcd;
+
+
+                    // falls resultOben und ResultUnten zusammen oder -1 ergeben wird diese zu der ganzen Zahl gezählt
+                    if (ResultOben / ResultUnten == 1 || ResultOben / ResultUnten == -1
+                        || ResultUnten / ResultOben == 1 || ResultUnten / ResultOben == -1)
+                    {
+
+                        ResultObenB.Text = "0";
+                        ResultUntenB.Text = "0";
+                        forCheck = forCheck + 1;
+
+                        // schreibt die ganze Zahl auf
+                        if (isNegative & bothNegative == false)
+                        {
+                            ResultRest = forCheck * -1;
+                        }
+
+                        ResultRestB.Text = ResultRest.ToString();
+
+                    }
+
+                    else
+                    {
+                        ResultObenB.Text = ResultOben.ToString();
+                        ResultUntenB.Text = ResultUnten.ToString();
+                        ResultRestB.Text = ResultRest.ToString();
+
+                        // schreibt die ganze Zahl auf
+                        
+
+                        if (isNegative & bothNegative == false)
+                        {
+                            if (ResultRestB.Text == "0" & ResultObenB.Text != "0" & ResultUntenB.Text != "0")
+                            {
+                                ResultOben = ResultOben * -1;
+                                ResultObenB.Text = ResultOben.ToString();
+
+                            }
+
+                            ResultRest = forCheck * -1;
+                        }
+
+                        ResultRestB.Text = ResultRest.ToString();
+                    }
+                }
+
+                else
+                {
+
+                    // zieht die ermittelte Ganze Zahl vom Bruch ab
+                    ResultOben = ResultOben + forCheck * ResultUnten;
+
+                    // holt den greatest common divisor von Zähler und Nenner um die beiden zu kürzen
+                    var gcd = GreatestCommonDivisor(ResultOben, ResultUnten);
+
+                    ResultOben = ResultOben / gcd;
+                    ResultUnten = ResultUnten / gcd;
+
+                    if (ResultOben / ResultUnten == 1 || ResultOben / ResultUnten == -1
+                        || ResultUnten / ResultOben == 1 || ResultUnten / ResultOben == -1)
+                    {
+
+                        ResultObenB.Text = "0";
+                        ResultUntenB.Text = "0";
+                        forCheck = forCheck + 1;
+                        // setzt die ganze Zahl erst ins negative und schreibt sie dann auf
+                        forCheck = forCheck * -1;
+                        ResultRestB.Text = forCheck.ToString();
+
+                    }
+                    else
+                    {
+                        ResultObenB.Text = ResultOben.ToString();
+                        ResultUntenB.Text = ResultUnten.ToString();
+
+                        // setzt die ganze Zahl erst ins negative und schreibt sie dann auf
+                        ResultRest = forCheck * -1;
+                        ResultRestB.Text = forCheck.ToString();
+                    }
+
+                }
+
+            }
+
+            // wenn das ergebnis keine ganze Zahl ist und nicht kürzbar ist
+            else if (ResultUnten != 1)
+            {
+                ResultObenB.Text = ResultOben.ToString();
+                ResultUntenB.Text = ResultUnten.ToString();
+                ResultRestB.Text = "0";
+            }
+
+            // wenn das Ergebnis oben eine Null ist, muss es auch unten eine Null sein
+            else if (ResultOben == 0)
+            {
+                ResultUnten = 0;
+                ResultUntenB.Text = ResultUnten.ToString();
+                ResultRestB.Text = "0";
+            }
+
+            // wenn es eine ganze zahl ist, wird diese als Rest alleine dargestellt
+            else
+            {
+                ResultObenB.Text = "0";
+                ResultUntenB.Text = "0";
+                ResultRestB.Text = ResultOben.ToString();
+            }
+        }
+        
+
+        private void Positive()
+        {
+            // Macht die Zahlen posiiv
+            if (ResultOben < 0 || ResultUnten < 0)
+            {
+                if (ResultOben < 0)
+                {
+                    ResultOben = ResultOben * -1;
+                }
+
+                if (ResultUnten < 0)
+                {
+                    ResultUnten = ResultUnten * -1;
+                }
+            }
+        }
+
+        private double GetLCM(double nennerL, double nennerR) //Beispiel 2 und 3
         {
             // 
             double num1, num2;
@@ -236,6 +426,7 @@ namespace Taschenrechner
 
         }
 
+        
         //private static ulong GCD(ulong a, ulong b)
         //{
         //    while (a != 0 && b != 0) // solange a != 0 und b != 0 
@@ -389,6 +580,16 @@ namespace Taschenrechner
             ResultUntenB.Text = ResultUnten.ToString();
             ResultFull = 0;
             ResultFullB.Text = ResultFull.ToString();
+            FirstRest = 0;
+            RechtsRest.Text = FirstRest.ToString();
+            SecondRest = 0;
+            LinksRest.Text = SecondRest.ToString();
+            FirstRestFull = 0;
+            SecondRestFull = 0;
+            
+
+            ResultRestB.Text = "0";
+
 
 
         }
@@ -402,6 +603,11 @@ namespace Taschenrechner
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
         {
 
         }

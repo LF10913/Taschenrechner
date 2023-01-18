@@ -1,6 +1,6 @@
 ﻿namespace Taschenrechner
 {
-    partial class Form1
+    partial class Calculator
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -29,13 +29,17 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.RechtsRest = new System.Windows.Forms.TextBox();
+            this.LinksRest = new System.Windows.Forms.TextBox();
+            this.ResultRestB = new System.Windows.Forms.Label();
             this.clearButton = new System.Windows.Forms.Button();
             this.divide = new System.Windows.Forms.Button();
             this.multiply = new System.Windows.Forms.Button();
             this.subtract = new System.Windows.Forms.Button();
             this.add = new System.Windows.Forms.Button();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.strich = new System.Windows.Forms.Label();
             this.ResultFullB = new System.Windows.Forms.Label();
             this.SecondOben = new System.Windows.Forms.TextBox();
@@ -49,13 +53,17 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.label3);
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.label1);
+            this.panel1.Controls.Add(this.RechtsRest);
+            this.panel1.Controls.Add(this.LinksRest);
+            this.panel1.Controls.Add(this.ResultRestB);
             this.panel1.Controls.Add(this.clearButton);
             this.panel1.Controls.Add(this.divide);
             this.panel1.Controls.Add(this.multiply);
             this.panel1.Controls.Add(this.subtract);
             this.panel1.Controls.Add(this.add);
-            this.panel1.Controls.Add(this.label3);
-            this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.strich);
             this.panel1.Controls.Add(this.ResultFullB);
             this.panel1.Controls.Add(this.SecondOben);
@@ -71,160 +79,191 @@
             this.panel1.TabIndex = 0;
             this.panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.panel1_Paint);
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(390, 151);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(28, 29);
+            this.label3.TabIndex = 34;
+            this.label3.Text = "=";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
+            // 
+            // label2
+            // 
+            this.label2.BackColor = System.Drawing.SystemColors.Desktop;
+            this.label2.Location = new System.Drawing.Point(479, 164);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(57, 4);
+            this.label2.TabIndex = 33;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.SystemColors.Desktop;
+            this.label1.Location = new System.Drawing.Point(291, 164);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(57, 4);
+            this.label1.TabIndex = 32;
+            // 
+            // RechtsRest
+            // 
+            this.RechtsRest.Location = new System.Drawing.Point(229, 152);
+            this.RechtsRest.Name = "RechtsRest";
+            this.RechtsRest.Size = new System.Drawing.Size(45, 22);
+            this.RechtsRest.TabIndex = 30;
+            this.RechtsRest.Text = "0";
+            // 
+            // LinksRest
+            // 
+            this.LinksRest.Location = new System.Drawing.Point(11, 151);
+            this.LinksRest.Name = "LinksRest";
+            this.LinksRest.Size = new System.Drawing.Size(45, 22);
+            this.LinksRest.TabIndex = 0;
+            this.LinksRest.Text = "0";
+            // 
+            // ResultRestB
+            // 
+            this.ResultRestB.AutoSize = true;
+            this.ResultRestB.Location = new System.Drawing.Point(447, 159);
+            this.ResultRestB.Name = "ResultRestB";
+            this.ResultRestB.Size = new System.Drawing.Size(14, 16);
+            this.ResultRestB.TabIndex = 27;
+            this.ResultRestB.Text = "0";
+            // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(197, 246);
+            this.clearButton.Location = new System.Drawing.Point(143, 259);
             this.clearButton.Name = "clearButton";
             this.clearButton.Size = new System.Drawing.Size(75, 23);
-            this.clearButton.TabIndex = 24;
+            this.clearButton.TabIndex = 100;
             this.clearButton.Text = "Clear";
             this.clearButton.UseVisualStyleBackColor = true;
             this.clearButton.Click += new System.EventHandler(this.ClearClick);
             // 
             // divide
             // 
-            this.divide.AutoSize = true;
             this.divide.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.divide.Location = new System.Drawing.Point(220, 202);
+            this.divide.Location = new System.Drawing.Point(162, 205);
             this.divide.Name = "divide";
-            this.divide.Size = new System.Drawing.Size(21, 26);
-            this.divide.TabIndex = 23;
+            this.divide.Size = new System.Drawing.Size(30, 30);
+            this.divide.TabIndex = 90;
             this.divide.Text = "/";
             this.divide.UseVisualStyleBackColor = true;
             this.divide.Click += new System.EventHandler(this.divideButton);
             // 
             // multiply
             // 
-            this.multiply.AutoSize = true;
             this.multiply.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.multiply.Location = new System.Drawing.Point(220, 170);
+            this.multiply.Location = new System.Drawing.Point(162, 162);
             this.multiply.Name = "multiply";
-            this.multiply.Size = new System.Drawing.Size(22, 26);
-            this.multiply.TabIndex = 22;
+            this.multiply.Size = new System.Drawing.Size(30, 30);
+            this.multiply.TabIndex = 80;
             this.multiply.Text = "*";
             this.multiply.UseVisualStyleBackColor = true;
             this.multiply.Click += new System.EventHandler(this.multiplicationButton);
             // 
             // subtract
             // 
-            this.subtract.AutoSize = true;
             this.subtract.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.subtract.Location = new System.Drawing.Point(220, 138);
+            this.subtract.Location = new System.Drawing.Point(162, 125);
             this.subtract.Name = "subtract";
-            this.subtract.Size = new System.Drawing.Size(21, 26);
-            this.subtract.TabIndex = 21;
+            this.subtract.Size = new System.Drawing.Size(30, 30);
+            this.subtract.TabIndex = 70;
             this.subtract.Text = "-";
             this.subtract.UseVisualStyleBackColor = true;
             this.subtract.Click += new System.EventHandler(this.subtractionButton);
             // 
             // add
             // 
-            this.add.AutoSize = true;
             this.add.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.add.Location = new System.Drawing.Point(217, 106);
+            this.add.Location = new System.Drawing.Point(162, 89);
             this.add.Name = "add";
-            this.add.Size = new System.Drawing.Size(24, 26);
-            this.add.TabIndex = 20;
+            this.add.Size = new System.Drawing.Size(30, 30);
+            this.add.TabIndex = 60;
             this.add.Text = "+";
             this.add.UseVisualStyleBackColor = true;
             this.add.Click += new System.EventHandler(this.additionButton);
             // 
-            // label3
-            // 
-            this.label3.BackColor = System.Drawing.SystemColors.Desktop;
-            this.label3.Location = new System.Drawing.Point(447, 170);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 4);
-            this.label3.TabIndex = 19;
-            // 
-            // label2
-            // 
-            this.label2.BackColor = System.Drawing.SystemColors.Desktop;
-            this.label2.Location = new System.Drawing.Point(278, 170);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(125, 4);
-            this.label2.TabIndex = 18;
-            // 
             // strich
             // 
             this.strich.BackColor = System.Drawing.SystemColors.Desktop;
-            this.strich.Location = new System.Drawing.Point(68, 170);
+            this.strich.Location = new System.Drawing.Point(73, 170);
             this.strich.Name = "strich";
-            this.strich.Size = new System.Drawing.Size(125, 4);
+            this.strich.Size = new System.Drawing.Size(57, 4);
             this.strich.TabIndex = 17;
             // 
             // ResultFullB
             // 
             this.ResultFullB.AutoSize = true;
-            this.ResultFullB.Location = new System.Drawing.Point(470, 277);
+            this.ResultFullB.Location = new System.Drawing.Point(447, 233);
             this.ResultFullB.Name = "ResultFullB";
-            this.ResultFullB.Size = new System.Drawing.Size(13, 16);
+            this.ResultFullB.Size = new System.Drawing.Size(110, 16);
             this.ResultFullB.TabIndex = 10;
-            this.ResultFullB.Text = "x";
-            
+            this.ResultFullB.Text = "Ganzes Ergebnis";
             // 
             // SecondOben
             // 
-            this.SecondOben.Location = new System.Drawing.Point(294, 142);
+            this.SecondOben.Location = new System.Drawing.Point(303, 129);
             this.SecondOben.Name = "SecondOben";
-            this.SecondOben.Size = new System.Drawing.Size(100, 22);
-            this.SecondOben.TabIndex = 9;
-            this.SecondOben.Text = "2";
+            this.SecondOben.Size = new System.Drawing.Size(45, 22);
+            this.SecondOben.TabIndex = 40;
+            this.SecondOben.Text = "0";
             this.SecondOben.TextChanged += new System.EventHandler(this.TextChangeor);
             // 
             // SecondUnten
             // 
-            this.SecondUnten.Location = new System.Drawing.Point(294, 188);
+            this.SecondUnten.Location = new System.Drawing.Point(303, 184);
             this.SecondUnten.Name = "SecondUnten";
-            this.SecondUnten.Size = new System.Drawing.Size(100, 22);
-            this.SecondUnten.TabIndex = 8;
-            this.SecondUnten.Text = "-3";
+            this.SecondUnten.Size = new System.Drawing.Size(45, 22);
+            this.SecondUnten.TabIndex = 50;
+            this.SecondUnten.Text = "0";
             this.SecondUnten.TextChanged += new System.EventHandler(this.TextChangeUr);
             // 
             // FirstUnten
             // 
-            this.FirstUnten.Location = new System.Drawing.Point(81, 188);
+            this.FirstUnten.Location = new System.Drawing.Point(76, 186);
             this.FirstUnten.Name = "FirstUnten";
-            this.FirstUnten.Size = new System.Drawing.Size(100, 22);
-            this.FirstUnten.TabIndex = 7;
-            this.FirstUnten.Text = "7";
+            this.FirstUnten.Size = new System.Drawing.Size(45, 22);
+            this.FirstUnten.TabIndex = 20;
+            this.FirstUnten.Text = "0";
             this.FirstUnten.TextChanged += new System.EventHandler(this.TextChangeul);
             // 
             // firstOben
             // 
-            this.firstOben.Location = new System.Drawing.Point(81, 142);
+            this.firstOben.Location = new System.Drawing.Point(76, 134);
             this.firstOben.Name = "firstOben";
-            this.firstOben.Size = new System.Drawing.Size(100, 22);
-            this.firstOben.TabIndex = 6;
-            this.firstOben.Text = "-3";
+            this.firstOben.Size = new System.Drawing.Size(45, 22);
+            this.firstOben.TabIndex = 10;
+            this.firstOben.Text = "0";
             this.firstOben.TextChanged += new System.EventHandler(this.TextChangeol);
             // 
             // ResultObenB
             // 
             this.ResultObenB.AutoSize = true;
-            this.ResultObenB.Location = new System.Drawing.Point(470, 138);
+            this.ResultObenB.Location = new System.Drawing.Point(500, 132);
             this.ResultObenB.Name = "ResultObenB";
-            this.ResultObenB.Size = new System.Drawing.Size(13, 16);
+            this.ResultObenB.Size = new System.Drawing.Size(14, 16);
             this.ResultObenB.TabIndex = 5;
-            this.ResultObenB.Text = "x";
+            this.ResultObenB.Text = "0";
             // 
             // ResultUntenB
             // 
             this.ResultUntenB.AutoSize = true;
-            this.ResultUntenB.Location = new System.Drawing.Point(470, 194);
+            this.ResultUntenB.Location = new System.Drawing.Point(500, 188);
             this.ResultUntenB.Name = "ResultUntenB";
-            this.ResultUntenB.Size = new System.Drawing.Size(13, 16);
+            this.ResultUntenB.Size = new System.Drawing.Size(14, 16);
             this.ResultUntenB.TabIndex = 4;
-            this.ResultUntenB.Text = "x";
+            this.ResultUntenB.Text = "0";
             // 
-            // Form1
+            // Calculator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(561, 375);
             this.Controls.Add(this.panel1);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "Calculator";
+            this.Text = "Calculator";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -241,14 +280,18 @@
         private System.Windows.Forms.TextBox FirstUnten;
         private System.Windows.Forms.TextBox firstOben;
         private System.Windows.Forms.Label ResultFullB;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label strich;
         private System.Windows.Forms.Button divide;
         private System.Windows.Forms.Button multiply;
         private System.Windows.Forms.Button subtract;
         private System.Windows.Forms.Button add;
         private System.Windows.Forms.Button clearButton;
+        private System.Windows.Forms.Label ResultRestB;
+        private System.Windows.Forms.TextBox RechtsRest;
+        private System.Windows.Forms.TextBox LinksRest;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
     }
 }
 
